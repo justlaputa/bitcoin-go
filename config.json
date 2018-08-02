@@ -1,0 +1,22 @@
+{
+    "sender-keypair": {
+        "public": {
+            "hex": "",
+            "b58": ""
+        },
+        "private": {
+            "hex": "",
+            "b58": ""
+        }
+    },
+    "receiver-keypair": {
+        "public": {
+            "hex": "",
+            "b58": ""
+        },
+        "private": {
+            "hex": "",
+            "b58": ""
+        }
+    }
+}

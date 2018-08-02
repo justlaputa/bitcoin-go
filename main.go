@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"crypto/ecdsa"
 )
 
 const (
@@ -10,38 +9,21 @@ const (
 )
 
 func main() {
-	privateKey := getPrivateKey()
-	publicKey := getPublicKey(privateKey)
+	config := LoadConfig()
 
-	myWalletAddr := calcWalletAddress(publicKey)
+	if config.SenderKeys.PublicKey.HexString == "" {
+		config.SenderKeys = GenerateKeyPair()
+		config.ReceiverKeys = GenerateKeyPair()
+		SaveConfig(config)
+	}
 
-	receiverAddr := getReceiverAddress()
+	//receiverAddress := config.ReceiverKeys.PublicKey.Base58
+	tx := Transaction{}
 
-	tx := NewTransaction(publicKey, receiverAddr, TestAmount)
-
-	conn, err := ConnectBitcoinNetwork()
+	conn, _ := ConnectBitcoinNetwork()
 
 	log.Printf("sending transaction: %s", tx)
-	msg, err := conn.SendTX(tx)
+	msg, _ := conn.SendTX(tx)
 
 	log.Printf("got message: %s", msg)
-}
-
-func getPrivateKey() *ecdsa.PrivateKey {
-	// TODO: if private key in config file
-	// construct from config file
-	// else
-	return GeneratePrivateKey()
-}
-
-func getPublichKey(p *ecdsa.PrivateKey) *ecdsa.PublicKey {
-	return nil
-}
-
-func calcWalletAddress(pub *ecdsa.PublicKey) string {
-	return ""
-}
-
-func getReceiverAddress() string {
-
 }
